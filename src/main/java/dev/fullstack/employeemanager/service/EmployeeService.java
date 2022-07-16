@@ -6,8 +6,8 @@ import dev.fullstack.employeemanager.repo.EmployeeRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -30,10 +30,11 @@ public class EmployeeService {
 
     public Employee findById(Long id){
         return this.employeeRepo.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User by id: " + id + " was net found."));
+                .orElseThrow(() -> new UserNotFoundException("User by id: " + id + " was not found."));
     }
 
-    public  void deleteEmployeeById(Long id){
-        this.employeeRepo.deleteEmployeeById(id);
+    public void deleteEmployeeById(Long id){
+       if(!Objects.isNull(findById(id)))
+            this.employeeRepo.deleteById(id);
     }
 }
